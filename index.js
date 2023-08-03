@@ -27,6 +27,7 @@ const convertFn = () => {
 };
 
 const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
+ const basicauth = new Buffer.from(`${cnfluser}:${apikey}`).toString("base64")
   const payload = {
     type: "page",
     title: "My Test Page",
@@ -41,7 +42,7 @@ const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
   fetch(`${cnflurl}/wiki/rest/api/content`, {
     method: "POST",
     headers: {
-      "Authorization": `${cnfluser}:${apikey}`,
+      "Authorization": `${basicauth}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
