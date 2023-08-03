@@ -38,7 +38,7 @@ const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
       },
     },
   };
-  fetch(`${cnflurl}/rest/api/content`, {
+  fetch(`${cnflurl}/wiki/rest/api/content`, {
     method: "POST",
     headers: {
       Authorization: `${cnfluser}:${apikey}`,
