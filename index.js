@@ -5,6 +5,7 @@ const showdown = require("showdown");
 
 try {
   core.setOutput("converted", fs.readFileSync("README.md"));
+  console.log(fs.readFileSync("README.md"));
 } catch (e) {
   core.setFailed(e.message);
 }
