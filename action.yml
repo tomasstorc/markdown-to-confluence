@@ -1,0 +1,13 @@
+name: "MD converter"
+description: "convert markdown to html"
+inputs:
+  filename:
+    description: "Name of file to convert"
+    required: false
+    default: "README.md"
+outputs:
+  converted: # id of output
+    description: "converted markdown"
+runs:
+  using: "node16"
+  main: "index.js"
