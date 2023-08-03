@@ -65,5 +65,4 @@ const checkInputs = () => {
 
 checkInputs()
 let content = convertFn();
-content.replace(/(?:\r\n|\r|\n)/g, "\\n")
 publishContent(content);
