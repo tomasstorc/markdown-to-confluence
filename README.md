@@ -1,4 +1,4 @@
-# Github action which publish content of markdown to Confluence
+# Github action for publishing content of markdown to Confluence
 
 ## Description
 This action requires markdown file or content of markdown file as content. Information about your confleunce instance needs to be provided as well. 
