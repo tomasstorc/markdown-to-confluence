@@ -8,8 +8,8 @@ const convert2html = (text) => {
   return converter.makeHtml(text);
 };
 try {
-  console.log(fs.readdirSync("./"));
   let content = core.getInput("markdown");
+  console.log(content);
   let converted = convert2html(content);
   console.log(converted);
 } catch (e) {
