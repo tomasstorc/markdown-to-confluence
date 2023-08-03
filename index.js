@@ -8,6 +8,7 @@ const convert2html = (text) => {
   return converter.makeHtml(text);
 };
 try {
+  console.log(fs.readdirSync("./"));
   core.setOutput("converted", fs.readFileSync("README.md"));
   let fileText = fs.readFileSync("README.md").toString();
   let converted = convert2html(fileText);
