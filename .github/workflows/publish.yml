@@ -20,9 +20,5 @@ jobs:
         uses: ./
         with:
           filename: README.md
-      - name: convert markdown
-        run: |
-          curl --request POST \
-          --url $FUNCTION_URL \
-          --header 'Content-Type: multipart/form-data' \
-          --form file=@README.md
+        env:
+          TEST: text
