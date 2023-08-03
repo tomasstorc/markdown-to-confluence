@@ -4,7 +4,7 @@ const fs = require("fs");
 const showdown = require("showdown");
 
 try {
-  fs.readdir(testFolder, (err, files) => {
+  fs.readdir("./", (err, files) => {
     files.forEach((file) => {
       console.log(file);
       core.setOutput("converted", fs.readFileSync(file));
