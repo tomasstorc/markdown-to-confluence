@@ -25,7 +25,7 @@ const convertFn = () => {
   }
 };
 
-const publishContent = (content, spacekey, cnflurl, cnfluser,  apikey) => {
+const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
   const payload = {
     type: "page",
     title: "My Test Page",
@@ -40,24 +40,26 @@ const publishContent = (content, spacekey, cnflurl, cnfluser,  apikey) => {
   fetch(`${cnflurl}/rest/api/content`, {
     method: "POST",
     headers: {
-        'Authorization': `${cnfluser}:${apikey}`
+      Authorization: `${cnfluser}:${apikey}`,
     },
-    body: JSON.stringify(payload)
-  }).then(res => res.json()).then(data => {
-    console.log(data);
+    body: JSON.stringify(payload),
   })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    });
 };
 
 let content = convertFn();
-content.replace(/(?:\r\n|\r|\n)/g, '\\n');
+content.replace(/(?:\r\n|\r|\n)/g, "\\n");
 if (core.getInput("publish")) {
-  const SPACE_KEY = process.env.SPACE_ID;
+  const SPACE_KEY = process.env.SPACE_KEY;
   const CNFL_URL = process.env.CNFL_URL;
   const API_KEY = process.env.API_KEY;
-  const CNFL_USER = process.env.CNFL_USER
+  const CNFL_USER = process.env.CNFL_USER;
   !SPACE_KEY && core.setFailed("Confluence space key is missing, exiting");
   !CNFL_URL && core.setFailed("Confluence URL is missing, exiting");
   !API_KEY && core.setFailed("Confluence API key is missing, exiting");
-  !CNFL_USER $$ core.setFailed("Confluence user is missing, exiting")
-  publishContent(content, SPACE_KEY, CNFL_URL, CNFL_USER, API_KEY)
+  !CNFL_USER && core.setFailed("Confluence user is missing, exiting");
+  publishContent(content, SPACE_KEY, CNFL_URL, CNFL_USER, API_KEY);
 }
