@@ -42,6 +42,7 @@ const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
     method: "POST",
     headers: {
       Authorization: `${cnfluser}:${apikey}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
   })
