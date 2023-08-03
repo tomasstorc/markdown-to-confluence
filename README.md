@@ -1,2 +1,1 @@
-# markdowntest
-convert markdown to classic html and publish to confluence
+# Javascript action to convert markdown to html and publish it on confluence

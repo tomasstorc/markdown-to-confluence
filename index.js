@@ -7,20 +7,57 @@ const convert2html = (text) => {
   let converter = new showdown.Converter();
   return converter.makeHtml(text);
 };
-try {
-  if (core.getInput("markdown")) {
-    console.log("using text as input");
-    let content = core.getInput("markdown");
-    console.log(content);
-    let converted = convert2html(content);
-    console.log(converted);
+const convertFn = () => {
+  try {
+    if (core.getInput("markdown")) {
+      console.log("using text as input");
+      let content = core.getInput("markdown");
+      console.log(content);
+      return convert2html(content);
+    }
+    if (core.getInput("filename")) {
+      console.log("using file as input");
+      let filename = core.getInput("filename");
+      return convert2html(fs.readFileSync(filename).toString());
+    }
+  } catch (e) {
+    core.setFailed(e.message);
   }
-  if (core.getInput("filename")) {
-    console.log("using file as input");
-    let filename = core.getInput("filename");
-    let converted = convert2html(fs.readFileSync(filename).toString());
-    console.log(converted);
-  }
-} catch (e) {
-  core.setFailed(e.message);
+};
+
+const publishContent = (content, spacekey, cnflurl, cnfluser,  apikey) => {
+  const payload = {
+    type: "page",
+    title: "My Test Page",
+    space: { key: spacekey },
+    body: {
+      storage: {
+        value: content,
+        representation: "storage",
+      },
+    },
+  };
+  fetch(`${cnflurl}/rest/api/content`, {
+    method: "POST",
+    headers: {
+        'Authorization': `${cnfluser}:${apikey}`
+    },
+    body: JSON.stringify(payload)
+  }).then(res => res.json()).then(data => {
+    console.log(data);
+  })
+};
+
+let content = convertFn();
+content.replace(/(?:\r\n|\r|\n)/g, '\\n');
+if (core.getInput("publish")) {
+  const SPACE_KEY = process.env.SPACE_ID;
+  const CNFL_URL = process.env.CNFL_URL;
+  const API_KEY = process.env.API_KEY;
+  const CNFL_USER = process.env.CNFL_USER
+  !SPACE_KEY && core.setFailed("Confluence space key is missing, exiting");
+  !CNFL_URL && core.setFailed("Confluence URL is missing, exiting");
+  !API_KEY && core.setFailed("Confluence API key is missing, exiting");
+  !CNFL_USER $$ core.setFailed("Confluence user is missing, exiting")
+  publishContent(content, SPACE_KEY, CNFL_URL, CNFL_USER, API_KEY)
 }

@@ -7,9 +7,10 @@ inputs:
   filename:
     description: "filename of markdown, file have to be checked out"
     required: false
-outputs:
-  converted: # id of output
-    description: "converted markdown"
+  publish:
+    description: "Publish content of markdown on confluence"
+    required: false
+    default: "true"
 runs:
   using: "node16"
   main: "index.js"
