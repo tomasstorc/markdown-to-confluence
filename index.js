@@ -13,12 +13,12 @@ const convertFn = () => {
     if (core.getInput("markdown")) {
       console.log("using text as input");
       let content = core.getInput("markdown");
-      return convert2html(content).replace(/(?:\r\n|\r|\n)/g, "\\n");
+      return convert2html(content);
     }
     if (core.getInput("filename")) {
       console.log("using file as input");
       let filename = core.getInput("filename");
-      return convert2html(fs.readFileSync(filename).toString()).replace(/(?:\r\n|\r|\n)/g, "\\n");
+      return convert2html(fs.readFileSync(filename).toString());
     }
   } catch (e) {
     core.setFailed(e.message);
@@ -65,4 +65,5 @@ const checkInputs = () => {
 
 checkInputs()
 let content = convertFn();
+content.replace(/(?:\r\n|\r|\n)/g, "\\n")
 publishContent(content);
