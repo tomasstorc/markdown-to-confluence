@@ -13,25 +13,24 @@ const convertFn = () => {
     if (core.getInput("markdown")) {
       console.log("using text as input");
       let content = core.getInput("markdown");
-      console.log(content);
-      return convert2html(content);
+      return convert2html(content).replace(/(?:\r\n|\r|\n)/g, "\\n");
     }
     if (core.getInput("filename")) {
       console.log("using file as input");
       let filename = core.getInput("filename");
-      return convert2html(fs.readFileSync(filename).toString());
+      return convert2html(fs.readFileSync(filename).toString()).replace(/(?:\r\n|\r|\n)/g, "\\n");
     }
   } catch (e) {
     core.setFailed(e.message);
   }
 };
 
-const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
- const basicauth = new Buffer.from(`${cnfluser}:${apikey}`).toString("base64")
+const publishContent = (content, ) => {
+ const basicauth = new Buffer.from(`${process.env.CNFL_USER}:${process.env.API_KEY}`).toString("base64")
   const payload = {
     type: "page",
-    title: "My Test Page",
-    space: { key: spacekey },
+    title: core.getInput("title"),
+    space: { key: core.getInput("spacekey") },
     body: {
       storage: {
         value: content,
@@ -39,7 +38,7 @@ const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
       },
     },
   };
-  fetch(`${cnflurl}/wiki/rest/api/content`, {
+  fetch(`${core.getInput("cnflurl")}/wiki/rest/api/content`, {
     method: "POST",
     headers: {
       "Authorization": `Basic ${basicauth}`,
@@ -48,24 +47,22 @@ const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
     body: JSON.stringify(payload),
   })
     .then((res) => {
-      console.log(res);
       return res;
     })
     .then((data) => {
-      console.log(data);
+      console.log("success");
     });
 };
 
-let content = convertFn();
-content.replace(/(?:\r\n|\r|\n)/g, "\\n");
-if (core.getInput("publish")) {
-  const SPACE_KEY = process.env.SPACE_KEY;
-  const CNFL_URL = process.env.CNFL_URL;
-  const API_KEY = process.env.API_KEY;
-  const CNFL_USER = process.env.CNFL_USER;
-  !SPACE_KEY && core.setFailed("Confluence space key is missing, exiting");
-  !CNFL_URL && core.setFailed("Confluence URL is missing, exiting");
-  !API_KEY && core.setFailed("Confluence API key is missing, exiting");
-  !CNFL_USER && core.setFailed("Confluence user is missing, exiting");
-  publishContent(content, SPACE_KEY, CNFL_URL, CNFL_USER, API_KEY);
+const checkInputs = () => {
+    !core.getInput('spacekey') && core.setFailed("Confluence space key is missing, exiting");
+    !core.getInput('cnflurl') && core.setFailed("Confluence URL is missing, exiting");
+    !process.env.API_KEY && core.setFailed("Confluence API key is missing, exiting");
+    !process.env.CNFL_USER && core.setFailed("Confluence user is missing, exiting");
+    !core.getInput("title") && core.setFailed("Page title is missing, exiting");
 }
+
+
+checkInputs()
+let content = convertFn();
+publishContent(content);

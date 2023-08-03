@@ -7,10 +7,15 @@ inputs:
   filename:
     description: "filename of markdown, file have to be checked out"
     required: false
-  publish:
-    description: "Publish content of markdown on confluence"
-    required: false
-    default: "true"
+  spacekey:
+    description: "Key of confluence space where page should be published"
+    required: true
+  cnflurl:
+    description: "Base URL of confluence"
+    required: true
+  title:
+    description: "Title of page"
+    required: true
 runs:
   using: "node16"
   main: "index.js"
