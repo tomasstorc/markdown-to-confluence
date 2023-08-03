@@ -9,9 +9,8 @@ const convert2html = (text) => {
 };
 try {
   console.log(fs.readdirSync("./"));
-  core.setOutput("converted", fs.readFileSync("README.md"));
-  let fileText = fs.readFileSync("README.md").toString();
-  let converted = convert2html(fileText);
+  let content = core.getInput("markdown");
+  let converted = convert2html(content);
   console.log(converted);
 } catch (e) {
   core.setFailed(e.message);
