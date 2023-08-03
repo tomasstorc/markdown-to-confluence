@@ -41,7 +41,7 @@ const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
   fetch(`${cnflurl}/wiki/rest/api/content`, {
     method: "POST",
     headers: {
-      Authorization: `${cnfluser}:${apikey}`,
+      "Authorization": `${cnfluser}:${apikey}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify(payload),
