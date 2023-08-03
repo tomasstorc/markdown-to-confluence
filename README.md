@@ -10,9 +10,8 @@ This action requires markdown file or content of markdown file as content. Infor
 - spacekey - Key of confluence space where page should be created
 - cnflurl - Base URL of your confluence instance
 - title - Title for page which will be created
-### Environment variables
-- CNFL_USER - Username which be used as author of page
-- API_KEY - API key for authentication, must be key for user specified as CNFL_USER
+- cnfluser - Username which be used as author of page
+- apikey - API key for authentication, must be key for user specified as CNFL_USER
 ## Examples
 #### Use this action with standard README.md file checked out from your repository
     name: Publish markdown to Confleunce

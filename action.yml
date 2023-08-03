@@ -13,9 +13,14 @@ inputs:
   cnflurl:
     description: "Base URL of confluence"
     required: true
+  cnfluser:
+    description: "Username which be used as author of page"
+    required: true
   title:
     description: "Title of page"
     required: true
+  apikey:
+    description: "API key for authentication, must be key for user specified as cnfluser"
 runs:
   using: "node16"
   main: "index.js"

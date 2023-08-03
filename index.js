@@ -25,8 +25,8 @@ const convertFn = () => {
   }
 };
 
-const publishContent = (content, ) => {
- const basicauth = new Buffer.from(`${process.env.CNFL_USER}:${process.env.API_KEY}`).toString("base64")
+const publishContent = (content) => {
+ const basicauth = new Buffer.from(`${core.getInput('cnfluser')}:${core.getInput("apikey")}`).toString("base64")
   const payload = {
     type: "page",
     title: core.getInput("title"),
@@ -57,8 +57,8 @@ const publishContent = (content, ) => {
 const checkInputs = () => {
     !core.getInput('spacekey') && core.setFailed("Confluence space key is missing, exiting");
     !core.getInput('cnflurl') && core.setFailed("Confluence URL is missing, exiting");
-    !process.env.API_KEY && core.setFailed("Confluence API key is missing, exiting");
-    !process.env.CNFL_USER && core.setFailed("Confluence user is missing, exiting");
+    !core.getInput('apikey') && core.setFailed("Confluence API key is missing, exiting");
+    !core.getInput("cnfluser") && core.setFailed("Confluence user is missing, exiting");
     !core.getInput("title") && core.setFailed("Page title is missing, exiting");
 }
 
