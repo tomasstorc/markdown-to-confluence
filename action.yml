@@ -3,7 +3,10 @@ description: "convert markdown to html"
 inputs:
   markdown:
     description: "Content of markdown file"
-    required: true
+    required: false
+  filename:
+    description: "filename of markdown, file have to be checked out"
+    required: false
 outputs:
   converted: # id of output
     description: "converted markdown"
