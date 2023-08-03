@@ -5,7 +5,7 @@ const showdown = require("showdown");
 
 const convert2html = (text) => {
   let converter = new showdown.Converter();
-  return converter.convert2html(text);
+  return converter.makeHtml(text);
 };
 try {
   core.setOutput("converted", fs.readFileSync("README.md"));
