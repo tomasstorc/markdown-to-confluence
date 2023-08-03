@@ -45,7 +45,10 @@ const publishContent = (content, spacekey, cnflurl, cnfluser, apikey) => {
     },
     body: JSON.stringify(payload),
   })
-    .then((res) => res.json())
+    .then((res) => {
+      console.log(res);
+      return res;
+    })
     .then((data) => {
       console.log(data);
     });
