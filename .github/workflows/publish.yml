@@ -1,0 +1,20 @@
+name: Publish markdown to confluence
+on:
+  workflow_dispatch:
+jobs:
+  publish:
+    name: publish md
+    runs-on: linux
+    env:
+      CNFL_URL: https://tstest-dev.atlassian.net/
+      SPACE_KEY: ~701219c9808ed6f6b4abda4f307a0e1ab58a6
+      FUNCTION_URL: https://ts-mdconverter-func.azurewebsites.net/api/convert
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: convert markdown
+        run: |
+          curl --request POST \
+          --url $FUNCTION_URL \
+          --header 'Content-Type: multipart/form-data' \
+          --form file=@README.md
