@@ -8,7 +8,7 @@ on:
 jobs:
   publish:
     name: publish md
-    runs-on: linux
+    runs-on: ubuntu-latest
     env:
       CNFL_URL: https://tstest-dev.atlassian.net/
       SPACE_KEY: ~701219c9808ed6f6b4abda4f307a0e1ab58a6
