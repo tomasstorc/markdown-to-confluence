@@ -1,6 +1,10 @@
 name: Publish markdown to confluence
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
+
 jobs:
   publish:
     name: publish md
@@ -12,6 +16,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+      - name: use action
+        uses: ./
+        with:
+          filename: README.md
       - name: convert markdown
         run: |
           curl --request POST \
