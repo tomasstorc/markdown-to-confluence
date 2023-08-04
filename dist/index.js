@@ -59,7 +59,9 @@ const convertFn = () => {
     }
 };
 const publishContent = (content) => {
-    const basicauth = Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    const basicauth = core.getInput('basicauth')
+        ? core.getInput('basicauth')
+        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
     const payload = {
         type: 'page',
         title: core.getInput('title'),
@@ -79,10 +81,10 @@ const publishContent = (content) => {
         },
         body: JSON.stringify(payload)
     })
-        .then(res => {
+        .then((res) => {
         return res;
     })
-        .then(data => {
+        .then(() => {
         console.log('successfully published');
     });
 };
