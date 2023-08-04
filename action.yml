@@ -26,4 +26,4 @@ inputs:
     description: "base64 encode username and apikey, if provided there is no need to specify username and api key separately"
 runs:
   using: "node16"
-  main: "index.js"
+  main: "dist/index.js"
