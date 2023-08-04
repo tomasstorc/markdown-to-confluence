@@ -68,6 +68,8 @@ This action requires markdown file or content of markdown file as content. Infor
 ## TODO
 - [ ] Add function to just update existing page
 - [ ] Check if markdown or filename are provided
-- [ ] Remove environment variables completely for unification
+- [X] Remove environment variables completely for unification
+- [ ] Remove the need for node modules (ncc)
+
 
 
