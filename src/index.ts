@@ -26,9 +26,11 @@ const convertFn = () => {
 }
 
 const publishContent = (content: string | undefined) => {
-  const basicauth = Buffer.from(
-    `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
-  ).toString('base64')
+  const basicauth = core.getInput('basicauth')
+    ? core.getInput('basicauth')
+    : Buffer.from(
+        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
+      ).toString('base64')
   const payload = {
     type: 'page',
     title: core.getInput('title'),
