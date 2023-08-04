@@ -48,10 +48,10 @@ const publishContent = (content: string | undefined) => {
     },
     body: JSON.stringify(payload)
   })
-    .then(res => {
+    .then((res: any) => {
       return res
     })
-    .then(data => {
+    .then(() => {
       console.log('successfully published')
     })
 }
