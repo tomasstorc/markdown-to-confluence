@@ -68,7 +68,8 @@ This action requires markdown file or content of markdown file as content. Infor
 - [ ] Add function to just update existing page
 - [X] Check if markdown or filename are provided
 - [X] Remove environment variables completely for unification
-- [ ] Remove the need for node modules (ncc)
+- [X] Remove the need for node modules (ncc)
+- [X] Replace JavaScript with TypeScript
 
 
 
