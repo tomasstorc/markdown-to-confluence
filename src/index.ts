@@ -73,6 +73,15 @@ const checkInputs = () => {
     core.setFailed('Markdown string or markdown file are missing, exiting')
 }
 
+const findExisting = async () => {
+  const res = await fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content?title=${core.getInput('title')}
+  &spaceKey=${core.getInput("spacekey")}`)
+  const data = await res.json()
+  console.log(data);
+  
+}
+
 checkInputs()
 let content = convertFn()
+findExisting()
 publishContent(content)
