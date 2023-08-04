@@ -60,6 +60,7 @@ const checkInputs = () => {
     !core.getInput('apikey') && core.setFailed("Confluence API key is missing, exiting");
     !core.getInput("cnfluser") && core.setFailed("Confluence user is missing, exiting");
     !core.getInput("title") && core.setFailed("Page title is missing, exiting");
+    !core.getInput("filename") && !core.getInput("markdown") && core.setFailed("Markdown string or markdown file are missing, exiting")
 }
 
 

@@ -15,12 +15,15 @@ inputs:
     required: true
   cnfluser:
     description: "Username which be used as author of page"
-    required: true
+    required: false
   title:
     description: "Title of page"
     required: true
   apikey:
     description: "API key for authentication, must be key for user specified as cnfluser"
+    required: false
+  basicauth:
+    description: "base64 encode username and apikey, if provided there is no need to specify username and api key separately"
 runs:
   using: "node16"
   main: "index.js"
