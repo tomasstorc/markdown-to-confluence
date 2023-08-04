@@ -39,9 +39,9 @@ This action requires markdown file or content of markdown file as content. Infor
                 spacekey: ~701219c9808ed6f6b4abda4f307a0e1ab58a6
                 cnflurl: https://tstest-dev.atlassian.net/
                 title: "Page created from markdown"
-            env:
-            CNFL_USER: ${{ secrets.CNFL_USER }}
-            API_KEY: ${{ secrets.API_KEY }}
+                cnfluser: ${{ secrets.CNFL_USER }}
+                apikey: ${{ secrets.API_KEY }}
+
 #### Use this action with string as input
     name: Publish markdown to Confleunce
     on:
@@ -62,9 +62,8 @@ This action requires markdown file or content of markdown file as content. Infor
               spacekey: ~701219c9808ed6f6b4abda4f307a0e1ab58a6
               cnflurl: https://tstest-dev.atlassian.net/
               title: "Page created from markdown"
-            env:
-              CNFL_USER: ${{ secrets.CNFL_USER }}
-              API_KEY: ${{ secrets.API_KEY }}
+              cnfluser: ${{ secrets.CNFL_USER }}
+              apikey: ${{ secrets.API_KEY }}
 ## TODO
 - [ ] Add function to just update existing page
 - [X] Check if markdown or filename are provided
