@@ -88,6 +88,8 @@ const updateContent = (content: string | undefined, id: string) => {
     body: JSON.stringify(payload)
   })
     .then((res: any) => {
+      console.log(res);
+      
       return res
     })
     .then(() => {

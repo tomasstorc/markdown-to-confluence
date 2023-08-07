@@ -125,6 +125,7 @@ const updateContent = (content, id) => {
         body: JSON.stringify(payload)
     })
         .then((res) => {
+        console.log(res);
         return res;
     })
         .then(() => {
