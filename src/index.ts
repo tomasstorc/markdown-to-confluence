@@ -79,7 +79,7 @@ const updateContent = (content: string | undefined, id: string) => {
       number: 2
     }
   }
-  fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content${id}`, {
+  fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
     method: 'PUT',
     headers: {
       Authorization: `Basic ${basicauth}`,

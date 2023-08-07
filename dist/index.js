@@ -116,7 +116,7 @@ const updateContent = (content, id) => {
             number: 2
         }
     };
-    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content${id}`, {
+    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
         method: 'PUT',
         headers: {
             Authorization: `Basic ${basicauth}`,
