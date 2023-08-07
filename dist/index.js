@@ -97,6 +97,36 @@ const publishContent = (content) => {
         console.log('successfully published');
     });
 };
+const updateContent = (content, id) => {
+    const basicauth = core.getInput('basicauth')
+        ? core.getInput('basicauth')
+        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    const payload = {
+        type: 'page',
+        title: core.getInput('title'),
+        space: { key: core.getInput('spacekey') },
+        body: {
+            storage: {
+                value: content,
+                representation: 'storage'
+            }
+        }
+    };
+    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content${id}`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Basic ${basicauth}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then((res) => {
+        return res;
+    })
+        .then(() => {
+        console.log('successfully updated');
+    });
+};
 const checkInputs = () => {
     !core.getInput('spacekey') &&
         core.setFailed('Confluence space key is missing, exiting');
@@ -121,12 +151,15 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
         }
     });
     const data = yield res.json();
-    console.log(data.results[0].id);
+    return data.results[0].id ? data.results[0].id : '';
 });
-checkInputs();
-let content = convertFn();
-findExisting();
-publishContent(content);
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    checkInputs();
+    const content = convertFn();
+    const id = yield findExisting();
+    id ? publishContent(content) : updateContent(content, id);
+});
+main();
 
 
 /***/ }),

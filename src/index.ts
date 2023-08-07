@@ -58,6 +58,39 @@ const publishContent = (content: string | undefined) => {
     })
 }
 
+const updateContent = (content: string | undefined, id: string) => {
+  const basicauth = core.getInput('basicauth')
+    ? core.getInput('basicauth')
+    : Buffer.from(
+        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
+      ).toString('base64')
+  const payload = {
+    type: 'page',
+    title: core.getInput('title'),
+    space: {key: core.getInput('spacekey')},
+    body: {
+      storage: {
+        value: content,
+        representation: 'storage'
+      }
+    }
+  }
+  fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Basic ${basicauth}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+    .then((res: any) => {
+      return res
+    })
+    .then(() => {
+      console.log('successfully updated')
+    })
+}
+
 const checkInputs = () => {
   !core.getInput('spacekey') &&
     core.setFailed('Confluence space key is missing, exiting')
@@ -80,9 +113,9 @@ const findExisting = async () => {
         `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
       ).toString('base64')
   const res = await fetch(
-    `${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput('spacekey')}&title=${core.getInput(
-      'title'
-    )}`,
+    `${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput(
+      'spacekey'
+    )}&title=${core.getInput('title')}`,
     {
       headers: {
         Authorization: `Basic ${basicauth}`
@@ -93,7 +126,11 @@ const findExisting = async () => {
   return data.results[0].id ? data.results[0].id : ''
 }
 
-checkInputs()
-let content = convertFn()
-findExisting()
-publishContent(content)
+const main = async () => {
+  checkInputs()
+  const content = convertFn()
+  const id = await findExisting()
+  id ? publishContent(content) : updateContent(content, id)
+}
+
+main()
