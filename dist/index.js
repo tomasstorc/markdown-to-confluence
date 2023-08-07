@@ -13428,6 +13428,7 @@ class Body {
 	 */
 	async json() {
 		const text = await this.text();
+    console.log(text);
 		return JSON.parse(text);
 	}
 
