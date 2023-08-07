@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {isCloud, handleAuth} from './utils'
+import {isCloud, handleAuth, handleVersion} from './utils'
 
 import * as fs from 'fs'
 import {Converter} from 'showdown'
@@ -125,20 +125,6 @@ const findExisting = async () => {
   )
   const data: any = await res.json()
   return data.results[0]?.id ? data.results[0].id : ''
-}
-
-const handleVersion = async (id: string) => {
-  const basicauth = handleAuth()
-  const res = await fetch(
-    `${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`,
-    {
-      headers: {
-        Authorization: `Basic ${basicauth}`
-      }
-    }
-  )
-  const data: any = await res.json()
-  return +data.version.number + 1
 }
 
 const main = async () => {

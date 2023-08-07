@@ -12,3 +12,17 @@ export const handleAuth = () => {
         `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
       ).toString('base64')
 }
+
+export const handleVersion = async (id: string) => {
+  const basicauth = handleAuth()
+  const res = await fetch(
+    `${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`,
+    {
+      headers: {
+        Authorization: `Basic ${basicauth}`
+      }
+    }
+  )
+  const data: any = await res.json()
+  return +data.version.number + 1
+}
