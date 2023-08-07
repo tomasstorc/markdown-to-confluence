@@ -157,7 +157,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     checkInputs();
     const content = convertFn();
     const id = yield findExisting();
-    id ? publishContent(content) : updateContent(content, id);
+    id ? updateContent(content, id) : publishContent(content);
 });
 main();
 

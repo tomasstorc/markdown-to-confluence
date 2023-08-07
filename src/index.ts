@@ -130,7 +130,7 @@ const main = async () => {
   checkInputs()
   const content = convertFn()
   const id = await findExisting()
-  id ? publishContent(content) : updateContent(content, id)
+  id ? updateContent(content, id) : publishContent(content)
 }
 
 main()
