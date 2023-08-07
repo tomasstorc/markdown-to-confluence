@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { isCloud } from './utils'
+import {isCloud, handleAuth, handleVersion} from './utils'
 
 import * as fs from 'fs'
 import {Converter} from 'showdown'
@@ -27,11 +27,7 @@ const convertFn = () => {
 }
 
 const publishContent = (content: string | undefined) => {
-  const basicauth = core.getInput('basicauth')
-    ? core.getInput('basicauth')
-    : Buffer.from(
-        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
-      ).toString('base64')
+  const basicauth = handleAuth()
   const payload = {
     type: 'page',
     title: core.getInput('title'),
@@ -43,14 +39,19 @@ const publishContent = (content: string | undefined) => {
       }
     }
   }
-  fetch(`${core.getInput('cnflurl')}${isCloud(core.getInput('cnflurl')) && '/wiki'}/rest/api/content`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${basicauth}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  })
+  fetch(
+    `${core.getInput('cnflurl')}${
+      isCloud(core.getInput('cnflurl')) && '/wiki'
+    }/rest/api/content`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${basicauth}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    }
+  )
     .then((res: any) => {
       return res
     })
@@ -59,12 +60,9 @@ const publishContent = (content: string | undefined) => {
     })
 }
 
-const updateContent = (content: string | undefined, id: string) => {
-  const basicauth = core.getInput('basicauth')
-    ? core.getInput('basicauth')
-    : Buffer.from(
-        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
-      ).toString('base64')
+const updateContent = async (content: string | undefined, id: string) => {
+  const basicauth = handleAuth()
+  const newVersion = await handleVersion(id)
   const payload = {
     id,
     type: 'page',
@@ -77,7 +75,7 @@ const updateContent = (content: string | undefined, id: string) => {
       }
     },
     version: {
-      number: 3
+      number: newVersion
     }
   }
   fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
@@ -89,7 +87,8 @@ const updateContent = (content: string | undefined, id: string) => {
     body: JSON.stringify(payload)
   })
     .then((res: any) => {
-      if (res.status === 409) return core.setFailed("this version already exists")
+      if (res.status === 409)
+        return core.setFailed('this version already exists')
       return res
     })
     .then(() => {
@@ -113,11 +112,7 @@ const checkInputs = () => {
 }
 
 const findExisting = async () => {
-  const basicauth = core.getInput('basicauth')
-    ? core.getInput('basicauth')
-    : Buffer.from(
-        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
-      ).toString('base64')
+  const basicauth = handleAuth()
   const res = await fetch(
     `${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput(
       'spacekey'
