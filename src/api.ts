@@ -24,6 +24,8 @@ export const publishContent = (content: string | undefined) => {
     body: JSON.stringify(payload)
   })
     .then((res: any) => {
+      console.log(res)
+
       return res
     })
     .then(() => {
