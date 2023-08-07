@@ -158,7 +158,7 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const basicauth = (0, utils_1.handleAuth)();
-    const res = (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
+    const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
         headers: {
             Authorization: `Basic ${basicauth}`
         }

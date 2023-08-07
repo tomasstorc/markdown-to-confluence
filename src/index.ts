@@ -129,11 +129,14 @@ const findExisting = async () => {
 
 const handleVersion = async (id: string) => {
   const basicauth = handleAuth()
-  const res = fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
-    headers: {
-      Authorization: `Basic ${basicauth}`
+  const res = await fetch(
+    `${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`,
+    {
+      headers: {
+        Authorization: `Basic ${basicauth}`
+      }
     }
-  })
+  )
   console.log(res)
 }
 
