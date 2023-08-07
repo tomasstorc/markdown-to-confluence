@@ -59,6 +59,44 @@ const publishContent = (content: string | undefined) => {
     })
 }
 
+const updateContent = (content: string | undefined, id: string) => {
+  const basicauth = core.getInput('basicauth')
+    ? core.getInput('basicauth')
+    : Buffer.from(
+        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
+      ).toString('base64')
+  const payload = {
+    id,
+    type: 'page',
+    title: core.getInput('title'),
+    space: {key: core.getInput('spacekey')},
+    body: {
+      storage: {
+        value: content,
+        representation: 'storage'
+      }
+    },
+    version: {
+      number: 3
+    }
+  }
+  fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Basic ${basicauth}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  })
+    .then((res: any) => {
+      if (res.status === 409) return core.setFailed("this version already exists")
+      return res
+    })
+    .then(() => {
+      console.log('successfully updated')
+    })
+}
+
 const checkInputs = () => {
   !core.getInput('spacekey') &&
     core.setFailed('Confluence space key is missing, exiting')
@@ -74,6 +112,31 @@ const checkInputs = () => {
     core.setFailed('Markdown string or markdown file are missing, exiting')
 }
 
-checkInputs()
-let content = convertFn()
-publishContent(content)
+const findExisting = async () => {
+  const basicauth = core.getInput('basicauth')
+    ? core.getInput('basicauth')
+    : Buffer.from(
+        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
+      ).toString('base64')
+  const res = await fetch(
+    `${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput(
+      'spacekey'
+    )}&title=${core.getInput('title')}`,
+    {
+      headers: {
+        Authorization: `Basic ${basicauth}`
+      }
+    }
+  )
+  const data: any = await res.json()
+  return data.results[0]?.id ? data.results[0].id : ''
+}
+
+const main = async () => {
+  checkInputs()
+  const content = convertFn()
+  const id = await findExisting()
+  id ? updateContent(content, id) : publishContent(content)
+}
+
+main()

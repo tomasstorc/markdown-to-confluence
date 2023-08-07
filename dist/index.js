@@ -29,6 +29,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -89,6 +98,42 @@ const publishContent = (content) => {
         console.log('successfully published');
     });
 };
+const updateContent = (content, id) => {
+    const basicauth = core.getInput('basicauth')
+        ? core.getInput('basicauth')
+        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    const payload = {
+        id,
+        type: 'page',
+        title: core.getInput('title'),
+        space: { key: core.getInput('spacekey') },
+        body: {
+            storage: {
+                value: content,
+                representation: 'storage'
+            }
+        },
+        version: {
+            number: 3
+        }
+    };
+    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Basic ${basicauth}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+        .then((res) => {
+        if (res.status === 409)
+            return core.setFailed("this version already exists");
+        return res;
+    })
+        .then(() => {
+        console.log('successfully updated');
+    });
+};
 const checkInputs = () => {
     !core.getInput('spacekey') &&
         core.setFailed('Confluence space key is missing, exiting');
@@ -103,9 +148,26 @@ const checkInputs = () => {
         !core.getInput('markdown') &&
         core.setFailed('Markdown string or markdown file are missing, exiting');
 };
-checkInputs();
-let content = convertFn();
-publishContent(content);
+const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const basicauth = core.getInput('basicauth')
+        ? core.getInput('basicauth')
+        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput('spacekey')}&title=${core.getInput('title')}`, {
+        headers: {
+            Authorization: `Basic ${basicauth}`
+        }
+    });
+    const data = yield res.json();
+    return ((_a = data.results[0]) === null || _a === void 0 ? void 0 : _a.id) ? data.results[0].id : '';
+});
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    checkInputs();
+    const content = convertFn();
+    const id = yield findExisting();
+    id ? updateContent(content, id) : publishContent(content);
+});
+main();
 
 
 /***/ }),
