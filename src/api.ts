@@ -1,5 +1,6 @@
 import {getInput, setFailed} from '@actions/core'
 import {handleAuth, isCloud, URL} from './utils'
+import fetch from 'node-fetch'
 
 export const publishContent = (content: string | undefined) => {
   const basicauth = handleAuth()
