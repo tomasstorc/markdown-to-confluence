@@ -25,7 +25,7 @@ export const checkInputs = () => {
     process.exit()
   }
   if (
-    (!getInput('apikey') && !getInput('cnfluser')) ||
+    !(!getInput('apikey') && !getInput('cnfluser')) ||
     !getInput('basicauth')
   ) {
     setFailed(
