@@ -88,8 +88,7 @@ const updateContent = (content: string | undefined, id: string) => {
     body: JSON.stringify(payload)
   })
     .then((res: any) => {
-      console.log(res);
-      if (res.status === 409) core.setFailed("this version already exists")
+      if (res.status === 409) return core.setFailed("this version already exists")
       return res
     })
     .then(() => {
