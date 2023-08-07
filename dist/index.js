@@ -98,7 +98,7 @@ const publishContent = (content) => {
 };
 const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, function* () {
     const basicauth = (0, utils_1.handleAuth)();
-    const newVersion = yield handleVersion(id);
+    const newVersion = yield (0, utils_1.handleVersion)(id);
     const payload = {
         id,
         type: 'page',
@@ -156,16 +156,6 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield res.json();
     return ((_a = data.results[0]) === null || _a === void 0 ? void 0 : _a.id) ? data.results[0].id : '';
 });
-const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const basicauth = (0, utils_1.handleAuth)();
-    const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
-        headers: {
-            Authorization: `Basic ${basicauth}`
-        }
-    });
-    const data = yield res.json();
-    return +data.version.number + 1;
-});
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     checkInputs();
     const content = convertFn();
@@ -205,8 +195,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.handleAuth = exports.isCloud = void 0;
+exports.handleVersion = exports.handleAuth = exports.isCloud = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const isCloud = (url) => {
     const suffix = url.slice(-2);
@@ -219,6 +218,17 @@ const handleAuth = () => {
         : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
 };
 exports.handleAuth = handleAuth;
+const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const basicauth = (0, exports.handleAuth)();
+    const res = yield fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
+        headers: {
+            Authorization: `Basic ${basicauth}`
+        }
+    });
+    const data = yield res.json();
+    return +data.version.number + 1;
+});
+exports.handleVersion = handleVersion;
 
 
 /***/ }),
