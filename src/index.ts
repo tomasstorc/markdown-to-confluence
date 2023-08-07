@@ -137,8 +137,8 @@ const handleVersion = async (id: string) => {
       }
     }
   )
-  const data = await res.json()
-  console.log(data)
+  const data: any = await res.json()
+  console.log(data.version.number)
 }
 
 const main = async () => {

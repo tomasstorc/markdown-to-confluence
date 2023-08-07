@@ -164,7 +164,7 @@ const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
         }
     });
     const data = yield res.json();
-    console.log(data);
+    console.log(data.version.number);
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     checkInputs();
