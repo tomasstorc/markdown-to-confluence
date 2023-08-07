@@ -90,6 +90,7 @@ const findExisting = async () => {
     })
   }
   &spaceKey=${core.getInput('spacekey')}`)
+  console.log(res)
   const data = await res.json()
   console.log(data)
 }

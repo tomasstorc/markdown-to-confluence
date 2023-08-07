@@ -122,6 +122,7 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
             }
         })}
   &spaceKey=${core.getInput('spacekey')}`);
+    console.log(res);
     const data = yield res.json();
     console.log(data);
 });
