@@ -79,18 +79,17 @@ const findExisting = async () => {
     : Buffer.from(
         `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
       ).toString('base64')
-  const res = await fetch(`${core.getInput(
-    'cnflurl'
-  )}/wiki/rest/api/content?title=${
-    (core.getInput('title'),
+  const res = await fetch(
+    `${core.getInput('cnflurl')}/wiki/rest/api/content?title=${core.getInput(
+      'title'
+    )}
+  &spaceKey=${core.getInput('spacekey')}`,
     {
       headers: {
         Authorization: `Basic ${basicauth}`
       }
-    })
-  }
-  &spaceKey=${core.getInput('spacekey')}`)
-  console.log(res)
+    }
+  )
   const data = await res.json()
   console.log(data)
 }
