@@ -113,7 +113,7 @@ const updateContent = (content, id) => {
             }
         },
         version: {
-            number: 2
+            number: 3
         }
     };
     (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
