@@ -69,9 +69,7 @@ const convertFn = () => {
     }
 };
 const publishContent = (content) => {
-    const basicauth = core.getInput('basicauth')
-        ? core.getInput('basicauth')
-        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    const basicauth = (0, utils_1.handleAuth)();
     const payload = {
         type: 'page',
         title: core.getInput('title'),
@@ -99,9 +97,8 @@ const publishContent = (content) => {
     });
 };
 const updateContent = (content, id) => {
-    const basicauth = core.getInput('basicauth')
-        ? core.getInput('basicauth')
-        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    const basicauth = (0, utils_1.handleAuth)();
+    const version = handleVersion(id);
     const payload = {
         id,
         type: 'page',
@@ -127,7 +124,7 @@ const updateContent = (content, id) => {
     })
         .then((res) => {
         if (res.status === 409)
-            return core.setFailed("this version already exists");
+            return core.setFailed('this version already exists');
         return res;
     })
         .then(() => {
@@ -150,9 +147,7 @@ const checkInputs = () => {
 };
 const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const basicauth = core.getInput('basicauth')
-        ? core.getInput('basicauth')
-        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    const basicauth = (0, utils_1.handleAuth)();
     const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput('spacekey')}&title=${core.getInput('title')}`, {
         headers: {
             Authorization: `Basic ${basicauth}`
@@ -160,6 +155,15 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     });
     const data = yield res.json();
     return ((_a = data.results[0]) === null || _a === void 0 ? void 0 : _a.id) ? data.results[0].id : '';
+});
+const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const basicauth = (0, utils_1.handleAuth)();
+    const res = (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
+        headers: {
+            Authorization: `Basic ${basicauth}`
+        }
+    });
+    console.log(res);
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     checkInputs();
@@ -173,17 +177,47 @@ main();
 /***/ }),
 
 /***/ 918:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isCloud = void 0;
+exports.handleAuth = exports.isCloud = void 0;
+const core = __importStar(__nccwpck_require__(2186));
 const isCloud = (url) => {
     const suffix = url.slice(-2);
-    return suffix === "atlassian.net" ? true : false;
+    return suffix === 'atlassian.net' ? true : false;
 };
 exports.isCloud = isCloud;
+const handleAuth = () => {
+    return core.getInput('basicauth')
+        ? core.getInput('basicauth')
+        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+};
+exports.handleAuth = handleAuth;
 
 
 /***/ }),
