@@ -77,6 +77,8 @@ export const updateContent = async (
 }
 
 export const findExisting = async () => {
+  console.log(URL)
+
   const basicauth = handleAuth()
   const res = await fetch(
     `${URL}?spaceKey=${getInput('spacekey')}&title=${getInput('title')}`,

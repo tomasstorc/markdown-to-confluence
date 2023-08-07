@@ -1,4 +1,4 @@
-import {isCloud, handleAuth, checkInputs, convertFn} from './utils'
+import {checkInputs, convertFn} from './utils'
 import {publishContent, updateContent, findExisting} from './api'
 
 const main = async () => {
