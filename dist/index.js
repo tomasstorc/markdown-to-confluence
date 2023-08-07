@@ -115,7 +115,7 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     const basicauth = core.getInput('basicauth')
         ? core.getInput('basicauth')
         : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
-    const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content?title=${core.getInput('title')}%20spaceKey=${core.getInput('spacekey')}`, {
+    const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput('spacekey')}&title=${core.getInput('title')}`, {
         headers: {
             Authorization: `Basic ${basicauth}`
         }
