@@ -20,6 +20,7 @@ export const checkInputs = () => {
   !getInput('cnflurl') && setFailed('Confluence URL is missing, exiting')
   !getInput('apikey') && setFailed('Confluence API key is missing, exiting')
   !getInput('cnfluser') && setFailed('Confluence user is missing, exiting')
+  process.exit()
   !getInput('title') && setFailed('Page title is missing, exiting')
   !getInput('filename') &&
     !getInput('markdown') &&

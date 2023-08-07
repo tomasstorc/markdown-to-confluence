@@ -169,6 +169,7 @@ const checkInputs = () => {
     !(0, core_1.getInput)('cnflurl') && (0, core_1.setFailed)('Confluence URL is missing, exiting');
     !(0, core_1.getInput)('apikey') && (0, core_1.setFailed)('Confluence API key is missing, exiting');
     !(0, core_1.getInput)('cnfluser') && (0, core_1.setFailed)('Confluence user is missing, exiting');
+    process.exit();
     !(0, core_1.getInput)('title') && (0, core_1.setFailed)('Page title is missing, exiting');
     !(0, core_1.getInput)('filename') &&
         !(0, core_1.getInput)('markdown') &&
