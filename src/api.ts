@@ -2,7 +2,7 @@ import {getInput, setFailed} from '@actions/core'
 import {handleAuth, isCloud} from './utils'
 import fetch from 'node-fetch'
 
-const URL = `${getInput('cnflurl')}${
+export const URL = `${getInput('cnflurl')}${
   isCloud(getInput('cnflurl')) && 'wiki'
 }/rest/api/content`
 
