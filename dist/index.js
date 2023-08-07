@@ -175,7 +175,7 @@ const checkInputs = () => {
     }
     if ((!(0, core_1.getInput)('apikey') && !(0, core_1.getInput)('cnfluser')) ||
         !(0, core_1.getInput)('basicauth')) {
-        (0, core_1.setFailed)('Confluence API key is missing, exiting');
+        (0, core_1.setFailed)('Confluence authentication is incomplete, exiting, provide username and password or base64 encoded basic credentials');
         process.exit();
     }
     if (!(0, core_1.getInput)('title')) {

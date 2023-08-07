@@ -28,7 +28,9 @@ export const checkInputs = () => {
     (!getInput('apikey') && !getInput('cnfluser')) ||
     !getInput('basicauth')
   ) {
-    setFailed('Confluence API key is missing, exiting')
+    setFailed(
+      'Confluence authentication is incomplete, exiting, provide username and password or base64 encoded basic credentials'
+    )
     process.exit()
   }
   if (!getInput('title')) {
