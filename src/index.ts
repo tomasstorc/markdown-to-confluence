@@ -123,7 +123,7 @@ const findExisting = async () => {
     }
   )
   const data: any = await res.json()
-  return data.results[0].id ? data.results[0].id : ''
+  return data.results[0]?.id ? data.results[0].id : ''
 }
 
 const main = async () => {
