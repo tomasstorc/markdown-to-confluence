@@ -77,7 +77,7 @@ export const updateContent = async (
 }
 
 export const findExisting = async () => {
-  console.log(URL)
+  console.log(`url is ${URL}`)
 
   const basicauth = handleAuth()
   const res = await fetch(
