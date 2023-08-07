@@ -111,6 +111,9 @@ const updateContent = (content, id) => {
                 value: content,
                 representation: 'storage'
             }
+        },
+        version: {
+            number: 2
         }
     };
     (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content${id}`, {
