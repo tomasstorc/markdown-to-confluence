@@ -183,7 +183,7 @@ const checkInputs = () => {
         (0, core_1.setFailed)('Page title is missing, exiting');
         process.exit();
     }
-    if (!(0, core_1.getInput)('filename') || !(0, core_1.getInput)('markdown')) {
+    if (!(0, core_1.getInput)('filename') && !(0, core_1.getInput)('markdown')) {
         (0, core_1.setFailed)('Markdown string or markdown file are missing, exiting');
         process.exit();
     }
