@@ -29,6 +29,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -102,8 +111,15 @@ const checkInputs = () => {
         !core.getInput('markdown') &&
         core.setFailed('Markdown string or markdown file are missing, exiting');
 };
+const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content?title=${core.getInput('title')}
+  &spaceKey=${core.getInput("spacekey")}`);
+    const data = yield res.json();
+    console.log(data);
+});
 checkInputs();
 let content = convertFn();
+findExisting();
 publishContent(content);
 
 
