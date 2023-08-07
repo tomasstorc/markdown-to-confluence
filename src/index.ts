@@ -60,9 +60,9 @@ const publishContent = (content: string | undefined) => {
     })
 }
 
-const updateContent = (content: string | undefined, id: string) => {
+const updateContent = async (content: string | undefined, id: string) => {
   const basicauth = handleAuth()
-  const version = handleVersion(id)
+  const newVersion = await handleVersion(id)
   const payload = {
     id,
     type: 'page',
@@ -75,7 +75,7 @@ const updateContent = (content: string | undefined, id: string) => {
       }
     },
     version: {
-      number: 3
+      number: newVersion
     }
   }
   fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
@@ -138,7 +138,7 @@ const handleVersion = async (id: string) => {
     }
   )
   const data: any = await res.json()
-  console.log(data.version.number)
+  return +data.version.number + 1
 }
 
 const main = async () => {

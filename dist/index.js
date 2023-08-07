@@ -96,9 +96,9 @@ const publishContent = (content) => {
         console.log('successfully published');
     });
 };
-const updateContent = (content, id) => {
+const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, function* () {
     const basicauth = (0, utils_1.handleAuth)();
-    const version = handleVersion(id);
+    const newVersion = yield handleVersion(id);
     const payload = {
         id,
         type: 'page',
@@ -111,7 +111,7 @@ const updateContent = (content, id) => {
             }
         },
         version: {
-            number: 3
+            number: newVersion
         }
     };
     (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
@@ -130,7 +130,7 @@ const updateContent = (content, id) => {
         .then(() => {
         console.log('successfully updated');
     });
-};
+});
 const checkInputs = () => {
     !core.getInput('spacekey') &&
         core.setFailed('Confluence space key is missing, exiting');
@@ -164,7 +164,7 @@ const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
         }
     });
     const data = yield res.json();
-    console.log(data.version.number);
+    return +data.version.number + 1;
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     checkInputs();
