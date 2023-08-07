@@ -25,8 +25,8 @@ export const checkInputs = () => {
     process.exit()
   }
   if (
-    !(!getInput('apikey') && !getInput('cnfluser')) ||
-    !getInput('basicauth')
+    !(!getInput('apikey') || !getInput('cnfluser')) ||
+    getInput('basicauth')
   ) {
     setFailed(
       'Confluence authentication is incomplete, exiting, provide username and password or base64 encoded basic credentials'
