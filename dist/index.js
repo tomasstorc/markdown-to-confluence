@@ -142,6 +142,7 @@ const checkInputs = () => {
         core.setFailed('Markdown string or markdown file are missing, exiting');
 };
 const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const basicauth = core.getInput('basicauth')
         ? core.getInput('basicauth')
         : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
@@ -151,7 +152,7 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
         }
     });
     const data = yield res.json();
-    return data.results[0].id ? data.results[0].id : '';
+    return ((_a = data.results[0]) === null || _a === void 0 ? void 0 : _a.id) ? data.results[0].id : '';
 });
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     checkInputs();
