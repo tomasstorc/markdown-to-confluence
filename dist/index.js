@@ -1,34 +1,11 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 4822:
+/***/ 8947:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -42,38 +19,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-const core = __importStar(__nccwpck_require__(2186));
+exports.findExisting = exports.updateContent = exports.publishContent = exports.URL = void 0;
+const core_1 = __nccwpck_require__(2186);
 const utils_1 = __nccwpck_require__(918);
-const fs = __importStar(__nccwpck_require__(7147));
-const showdown_1 = __nccwpck_require__(1872);
 const node_fetch_1 = __importDefault(__nccwpck_require__(4429));
-const convert2html = (text) => {
-    let converter = new showdown_1.Converter();
-    return converter.makeHtml(text);
-};
-const convertFn = () => {
-    try {
-        if (core.getInput('markdown')) {
-            console.log('using text as input');
-            let content = core.getInput('markdown');
-            return convert2html(content);
-        }
-        if (core.getInput('filename')) {
-            console.log('using file as input');
-            let filename = core.getInput('filename');
-            return convert2html(fs.readFileSync(filename).toString());
-        }
-    }
-    catch (e) {
-        core.setFailed(e.message);
-    }
-};
+exports.URL = `${(0, core_1.getInput)('cnflurl')}${(0, utils_1.isCloud)((0, core_1.getInput)('cnflurl'))}/rest/api/content`;
 const publishContent = (content) => {
     const basicauth = (0, utils_1.handleAuth)();
     const payload = {
         type: 'page',
-        title: core.getInput('title'),
-        space: { key: core.getInput('spacekey') },
+        title: (0, core_1.getInput)('title'),
+        space: { key: (0, core_1.getInput)('spacekey') },
         body: {
             storage: {
                 value: content,
@@ -81,7 +37,7 @@ const publishContent = (content) => {
             }
         }
     };
-    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}${(0, utils_1.isCloud)(core.getInput('cnflurl')) && '/wiki'}/rest/api/content`, {
+    (0, node_fetch_1.default)(exports.URL, {
         method: 'POST',
         headers: {
             Authorization: `Basic ${basicauth}`,
@@ -93,17 +49,18 @@ const publishContent = (content) => {
         return res;
     })
         .then(() => {
-        console.log('successfully published');
+        (0, core_1.info)('Successfully published new page');
     });
 };
+exports.publishContent = publishContent;
 const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, function* () {
     const basicauth = (0, utils_1.handleAuth)();
-    const newVersion = yield (0, utils_1.handleVersion)(id);
+    const newVersion = yield handleVersion(id);
     const payload = {
         id,
         type: 'page',
-        title: core.getInput('title'),
-        space: { key: core.getInput('spacekey') },
+        title: (0, core_1.getInput)('title'),
+        space: { key: (0, core_1.getInput)('spacekey') },
         body: {
             storage: {
                 value: content,
@@ -114,7 +71,7 @@ const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, functio
             number: newVersion
         }
     };
-    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
+    (0, node_fetch_1.default)(`${exports.URL}/${id}`, {
         method: 'PUT',
         headers: {
             Authorization: `Basic ${basicauth}`,
@@ -123,32 +80,21 @@ const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, functio
         body: JSON.stringify(payload)
     })
         .then((res) => {
-        if (res.status === 409)
-            return core.setFailed('this version already exists');
+        if (res.status === 409) {
+            (0, core_1.setFailed)('This version already exists, exiting');
+            process.exit();
+        }
         return res;
     })
         .then(() => {
-        console.log('successfully updated');
+        (0, core_1.info)(`Successfuly updated page with id ${id}, new version is ${newVersion}`);
     });
 });
-const checkInputs = () => {
-    !core.getInput('spacekey') &&
-        core.setFailed('Confluence space key is missing, exiting');
-    !core.getInput('cnflurl') &&
-        core.setFailed('Confluence URL is missing, exiting');
-    !core.getInput('apikey') &&
-        core.setFailed('Confluence API key is missing, exiting');
-    !core.getInput('cnfluser') &&
-        core.setFailed('Confluence user is missing, exiting');
-    !core.getInput('title') && core.setFailed('Page title is missing, exiting');
-    !core.getInput('filename') &&
-        !core.getInput('markdown') &&
-        core.setFailed('Markdown string or markdown file are missing, exiting');
-};
+exports.updateContent = updateContent;
 const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const basicauth = (0, utils_1.handleAuth)();
-    const res = yield (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput('spacekey')}&title=${core.getInput('title')}`, {
+    const res = yield (0, node_fetch_1.default)(`${exports.URL}?spaceKey=${(0, core_1.getInput)('spacekey')}&title=${(0, core_1.getInput)('title')}`, {
         headers: {
             Authorization: `Basic ${basicauth}`
         }
@@ -156,45 +102,26 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield res.json();
     return ((_a = data.results[0]) === null || _a === void 0 ? void 0 : _a.id) ? data.results[0].id : '';
 });
-const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    checkInputs();
-    const content = convertFn();
-    const id = yield findExisting();
-    id ? updateContent(content, id) : publishContent(content);
+exports.findExisting = findExisting;
+const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const basicauth = (0, utils_1.handleAuth)();
+    const res = yield (0, node_fetch_1.default)(`${exports.URL}/${id}`, {
+        headers: {
+            Authorization: `Basic ${basicauth}`
+        }
+    });
+    const data = yield res.json();
+    return +data.version.number + 1;
 });
-main();
 
 
 /***/ }),
 
-/***/ 918:
+/***/ 4822:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -205,30 +132,86 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.handleVersion = exports.handleAuth = exports.isCloud = void 0;
-const core = __importStar(__nccwpck_require__(2186));
+const utils_1 = __nccwpck_require__(918);
+const api_1 = __nccwpck_require__(8947);
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    (0, utils_1.checkInputs)();
+    const content = (0, utils_1.convertFn)();
+    const id = yield (0, api_1.findExisting)();
+    id ? (0, api_1.updateContent)(content, id) : (0, api_1.publishContent)(content);
+});
+main();
+
+
+/***/ }),
+
+/***/ 918:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.convertFn = exports.checkInputs = exports.handleAuth = exports.isCloud = void 0;
+const core_1 = __nccwpck_require__(2186);
+const fs_1 = __nccwpck_require__(7147);
+const showdown_1 = __nccwpck_require__(1872);
 const isCloud = (url) => {
-    const suffix = url.slice(-2);
-    return suffix === 'atlassian.net' ? true : false;
+    const suffix = url.split('.').slice(-2).join('.');
+    return suffix === 'atlassian.net/' || suffix === 'atlassian.net' ? 'wiki' : '';
 };
 exports.isCloud = isCloud;
 const handleAuth = () => {
-    return core.getInput('basicauth')
-        ? core.getInput('basicauth')
-        : Buffer.from(`${core.getInput('cnfluser')}:${core.getInput('apikey')}`).toString('base64');
+    return (0, core_1.getInput)('basicauth')
+        ? (0, core_1.getInput)('basicauth')
+        : Buffer.from(`${(0, core_1.getInput)('cnfluser')}:${(0, core_1.getInput)('apikey')}`).toString('base64');
 };
 exports.handleAuth = handleAuth;
-const handleVersion = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const basicauth = (0, exports.handleAuth)();
-    const res = yield fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
-        headers: {
-            Authorization: `Basic ${basicauth}`
+const checkInputs = () => {
+    if (!(0, core_1.getInput)('spacekey')) {
+        (0, core_1.setFailed)('Confluence space key is missing, exiting');
+        process.exit();
+    }
+    if (!(0, core_1.getInput)('cnflurl')) {
+        (0, core_1.setFailed)('Confluence URL is missing, exiting');
+        process.exit();
+    }
+    if (!(0, core_1.getInput)('apikey') || !(0, core_1.getInput)('cnfluser')) {
+        (0, core_1.setFailed)('Confluence authentication is incomplete, exiting, provide username and password or base64 encoded basic credentials');
+        process.exit();
+    }
+    if (!(0, core_1.getInput)('title')) {
+        (0, core_1.setFailed)('Page title is missing, exiting');
+        process.exit();
+    }
+    if (!(0, core_1.getInput)('filename') || !(0, core_1.getInput)('markdown')) {
+        (0, core_1.setFailed)('Markdown string or markdown file are missing, exiting');
+        process.exit();
+    }
+};
+exports.checkInputs = checkInputs;
+const convert2html = (text) => {
+    let converter = new showdown_1.Converter();
+    return converter.makeHtml(text);
+};
+const convertFn = () => {
+    try {
+        if ((0, core_1.getInput)('markdown')) {
+            (0, core_1.info)('using string as input');
+            let content = (0, core_1.getInput)('markdown');
+            return convert2html(content);
         }
-    });
-    const data = yield res.json();
-    return +data.version.number + 1;
-});
-exports.handleVersion = handleVersion;
+        if ((0, core_1.getInput)('filename')) {
+            (0, core_1.info)(`Using file ${(0, core_1.getInput)('filename')} as input`);
+            let filename = (0, core_1.getInput)('filename');
+            return convert2html((0, fs_1.readFileSync)(filename).toString());
+        }
+    }
+    catch (e) {
+        (0, core_1.setFailed)(e.message);
+        process.exit();
+    }
+};
+exports.convertFn = convertFn;
 
 
 /***/ }),

@@ -1,5 +1,5 @@
 {
-  "name": "markdowntest",
+  "name": "markdown-to-confluence",
   "version": "1.0.0",
   "description": "convert markdown to classic html and publish to confluence",
   "main": "lib/index.js",
