@@ -82,7 +82,7 @@ const findExisting = async () => {
   const res = await fetch(
     `${core.getInput('cnflurl')}/wiki/rest/api/content?title=${core.getInput(
       'title'
-    )}spaceKey=${core.getInput('spacekey')}`,
+    )}%20spaceKey=${core.getInput('spacekey')}`,
     {
       headers: {
         Authorization: `Basic ${basicauth}`
