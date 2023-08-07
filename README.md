@@ -65,12 +65,13 @@ This action requires markdown file or content of markdown file as content. Infor
               cnfluser: ${{ secrets.CNFL_USER }}
               apikey: ${{ secrets.API_KEY }}
 ## TODO
-- [ ] Add function to just update existing page
+- [X] Add function to just update existing page
 - [X] Check if markdown or filename are provided
 - [X] Remove environment variables completely for unification
 - [X] Remove the need for node modules (ncc)
 - [X] Replace JavaScript with TypeScript
 - [X] Check if instance is being run in Atlassian cloud
+- [ ] Automatically update version number
 
 
 
