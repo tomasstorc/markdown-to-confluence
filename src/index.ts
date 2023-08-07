@@ -89,7 +89,7 @@ const updateContent = (content: string | undefined, id: string) => {
   })
     .then((res: any) => {
       console.log(res);
-      
+      if (res.status === 409) core.setFailed("this version already exists")
       return res
     })
     .then(() => {
