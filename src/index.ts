@@ -80,9 +80,9 @@ const findExisting = async () => {
         `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
       ).toString('base64')
   const res = await fetch(
-    `${core.getInput('cnflurl')}/wiki/rest/api/content?title=${core.getInput(
+    `${core.getInput('cnflurl')}/wiki/rest/api/content?spaceKey=${core.getInput('spacekey')}&title=${core.getInput(
       'title'
-    )}%20spaceKey=${core.getInput('spacekey')}`,
+    )}`,
     {
       headers: {
         Authorization: `Basic ${basicauth}`
