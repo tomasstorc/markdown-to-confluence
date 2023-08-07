@@ -74,11 +74,24 @@ const checkInputs = () => {
 }
 
 const findExisting = async () => {
-  const res = await fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content?title=${core.getInput('title')}
-  &spaceKey=${core.getInput("spacekey")}`)
+  const basicauth = core.getInput('basicauth')
+    ? core.getInput('basicauth')
+    : Buffer.from(
+        `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
+      ).toString('base64')
+  const res = await fetch(`${core.getInput(
+    'cnflurl'
+  )}/wiki/rest/api/content?title=${
+    (core.getInput('title'),
+    {
+      headers: {
+        Authorization: `Basic ${basicauth}`
+      }
+    })
+  }
+  &spaceKey=${core.getInput('spacekey')}`)
   const data = await res.json()
-  console.log(data);
-  
+  console.log(data)
 }
 
 checkInputs()
