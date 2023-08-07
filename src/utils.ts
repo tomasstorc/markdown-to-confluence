@@ -24,10 +24,7 @@ export const checkInputs = () => {
     setFailed('Confluence URL is missing, exiting')
     process.exit()
   }
-  if (
-    !(!getInput('apikey') || !getInput('cnfluser')) ||
-    getInput('basicauth')
-  ) {
+  if (!getInput('apikey') || !getInput('cnfluser')) {
     setFailed(
       'Confluence authentication is incomplete, exiting, provide username and password or base64 encoded basic credentials'
     )
