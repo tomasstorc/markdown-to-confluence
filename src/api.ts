@@ -1,4 +1,4 @@
-import {getInput, setFailed} from '@actions/core'
+import {getInput, info, setFailed} from '@actions/core'
 import {handleAuth, isCloud} from './utils'
 import fetch from 'node-fetch'
 
@@ -28,12 +28,10 @@ export const publishContent = (content: string | undefined) => {
     body: JSON.stringify(payload)
   })
     .then((res: any) => {
-      console.log(res)
-
       return res
     })
     .then(() => {
-      console.log('successfully published')
+      info('Successfully published new page')
     })
 }
 
@@ -71,7 +69,9 @@ export const updateContent = async (
       return res
     })
     .then(() => {
-      console.log('successfully updated')
+      info(
+        `Successfuly updated page with id ${id}, new version is ${newVersion}`
+      )
     })
 }
 

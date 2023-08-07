@@ -46,11 +46,10 @@ const publishContent = (content) => {
         body: JSON.stringify(payload)
     })
         .then((res) => {
-        console.log(res);
         return res;
     })
         .then(() => {
-        console.log('successfully published');
+        (0, core_1.info)('Successfully published new page');
     });
 };
 exports.publishContent = publishContent;
@@ -86,7 +85,7 @@ const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, functio
         return res;
     })
         .then(() => {
-        console.log('successfully updated');
+        (0, core_1.info)(`Successfuly updated page with id ${id}, new version is ${newVersion}`);
     });
 });
 exports.updateContent = updateContent;
