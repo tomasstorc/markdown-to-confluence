@@ -46,7 +46,3 @@ export const convertFn = () => {
     setFailed(e.message)
   }
 }
-
-export const URL = `${getInput('cnflurl')}${
-  isCloud(getInput('cnflurl')) && 'wiki'
-}/rest/api/content`

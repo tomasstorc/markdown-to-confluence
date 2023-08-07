@@ -1,6 +1,10 @@
 import {getInput, setFailed} from '@actions/core'
-import {handleAuth, isCloud, URL} from './utils'
+import {handleAuth, isCloud} from './utils'
 import fetch from 'node-fetch'
+
+const URL = `${getInput('cnflurl')}${
+  isCloud(getInput('cnflurl')) && 'wiki'
+}/rest/api/content`
 
 export const publishContent = (content: string | undefined) => {
   const basicauth = handleAuth()
@@ -85,7 +89,7 @@ export const findExisting = async () => {
   return data.results[0]?.id ? data.results[0].id : ''
 }
 
-export const handleVersion = async (id: string) => {
+const handleVersion = async (id: string) => {
   const basicauth = handleAuth()
   const res = await fetch(`${URL}/${id}`, {
     headers: {
