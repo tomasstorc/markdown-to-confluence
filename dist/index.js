@@ -91,7 +91,6 @@ const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, functio
 exports.updateContent = updateContent;
 const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    console.log(`url is ${exports.URL}`);
     const basicauth = (0, utils_1.handleAuth)();
     const res = yield (0, node_fetch_1.default)(`${exports.URL}?spaceKey=${(0, core_1.getInput)('spacekey')}&title=${(0, core_1.getInput)('title')}`, {
         headers: {
@@ -156,8 +155,7 @@ const fs_1 = __nccwpck_require__(7147);
 const showdown_1 = __nccwpck_require__(1872);
 const isCloud = (url) => {
     const suffix = url.split('.').slice(-2).join('.');
-    console.log(suffix);
-    return suffix === 'atlassian.net/' ? 'wiki' : '';
+    return suffix === 'atlassian.net/' || suffix === 'atlassian.net' ? 'wiki' : '';
 };
 exports.isCloud = isCloud;
 const handleAuth = () => {
@@ -184,12 +182,12 @@ const convert2html = (text) => {
 const convertFn = () => {
     try {
         if ((0, core_1.getInput)('markdown')) {
-            console.log('using text as input');
+            (0, core_1.info)('using string as input');
             let content = (0, core_1.getInput)('markdown');
             return convert2html(content);
         }
         if ((0, core_1.getInput)('filename')) {
-            console.log('using file as input');
+            (0, core_1.info)(`Using file ${(0, core_1.getInput)('filename')} as input`);
             let filename = (0, core_1.getInput)('filename');
             return convert2html((0, fs_1.readFileSync)(filename).toString());
         }
