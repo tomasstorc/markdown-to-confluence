@@ -80,8 +80,10 @@ const updateContent = (content, id) => __awaiter(void 0, void 0, void 0, functio
         body: JSON.stringify(payload)
     })
         .then((res) => {
-        if (res.status === 409)
-            return (0, core_1.setFailed)('this version already exists');
+        if (res.status === 409) {
+            (0, core_1.setFailed)('This version already exists, exiting');
+            process.exit();
+        }
         return res;
     })
         .then(() => {
@@ -206,6 +208,7 @@ const convertFn = () => {
     }
     catch (e) {
         (0, core_1.setFailed)(e.message);
+        process.exit();
     }
 };
 exports.convertFn = convertFn;

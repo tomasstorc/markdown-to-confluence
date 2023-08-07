@@ -58,5 +58,6 @@ export const convertFn = () => {
     }
   } catch (e: any) {
     setFailed(e.message)
+    process.exit()
   }
 }

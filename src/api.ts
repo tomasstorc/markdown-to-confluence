@@ -65,7 +65,10 @@ export const updateContent = async (
     body: JSON.stringify(payload)
   })
     .then((res: any) => {
-      if (res.status === 409) return setFailed('this version already exists')
+      if (res.status === 409) {
+        setFailed('This version already exists, exiting')
+        process.exit()
+      }
       return res
     })
     .then(() => {
