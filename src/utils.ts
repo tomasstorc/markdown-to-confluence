@@ -4,6 +4,8 @@ import {Converter} from 'showdown'
 
 export const isCloud = (url: string): string => {
   const suffix = url.slice(-2)
+  console.log(suffix)
+
   return suffix === 'atlassian.net/' ? 'wiki' : ''
 }
 
