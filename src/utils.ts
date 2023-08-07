@@ -34,7 +34,7 @@ export const checkInputs = () => {
     setFailed('Page title is missing, exiting')
     process.exit()
   }
-  if (!getInput('filename') || !getInput('markdown')) {
+  if (!getInput('filename') && !getInput('markdown')) {
     setFailed('Markdown string or markdown file are missing, exiting')
     process.exit()
   }
