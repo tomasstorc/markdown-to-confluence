@@ -81,7 +81,11 @@ export const findExisting = async () => {
 
   const basicauth = handleAuth()
   const res = await fetch(
-    `${URL}?spaceKey=${getInput('spacekey')}&title=${getInput('title')}`,
+    `${getInput('cnflurl')}${
+      isCloud(getInput('cnflurl')) && 'wiki'
+    }/rest/api/content?spaceKey=${getInput('spacekey')}&title=${getInput(
+      'title'
+    )}`,
     {
       headers: {
         Authorization: `Basic ${basicauth}`
