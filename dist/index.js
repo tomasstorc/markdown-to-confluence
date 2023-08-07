@@ -43,6 +43,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
+const utils_1 = __nccwpck_require__(918);
 const fs = __importStar(__nccwpck_require__(7147));
 const showdown_1 = __nccwpck_require__(1872);
 const node_fetch_1 = __importDefault(__nccwpck_require__(4429));
@@ -82,7 +83,7 @@ const publishContent = (content) => {
             }
         }
     };
-    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}/wiki/rest/api/content`, {
+    (0, node_fetch_1.default)(`${core.getInput('cnflurl')}${(0, utils_1.isCloud)(core.getInput('cnflurl')) && '/wiki'}/rest/api/content`, {
         method: 'POST',
         headers: {
             Authorization: `Basic ${basicauth}`,
@@ -167,6 +168,22 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     id ? updateContent(content, id) : publishContent(content);
 });
 main();
+
+
+/***/ }),
+
+/***/ 918:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.isCloud = void 0;
+const isCloud = (url) => {
+    const suffix = url.slice(-2);
+    return suffix === "atlassian.net" ? true : false;
+};
+exports.isCloud = isCloud;
 
 
 /***/ }),

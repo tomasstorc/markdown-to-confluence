@@ -70,6 +70,7 @@ This action requires markdown file or content of markdown file as content. Infor
 - [X] Remove environment variables completely for unification
 - [X] Remove the need for node modules (ncc)
 - [X] Replace JavaScript with TypeScript
+- [X] Check if instance is being run in Atlassian cloud
 
 
 

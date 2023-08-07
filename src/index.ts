@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import { isCloud } from './utils'
 
 import * as fs from 'fs'
 import {Converter} from 'showdown'
@@ -42,7 +43,7 @@ const publishContent = (content: string | undefined) => {
       }
     }
   }
-  fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content`, {
+  fetch(`${core.getInput('cnflurl')}${isCloud(core.getInput('cnflurl')) && '/wiki'}/rest/api/content`, {
     method: 'POST',
     headers: {
       Authorization: `Basic ${basicauth}`,
