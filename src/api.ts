@@ -6,6 +6,8 @@ const URL = `${getInput('cnflurl')}${
   isCloud(getInput('cnflurl')) && 'wiki'
 }/rest/api/content`
 
+console.log(URL)
+
 export const publishContent = (content: string | undefined) => {
   const basicauth = handleAuth()
   const payload = {
