@@ -165,15 +165,27 @@ const handleAuth = () => {
 };
 exports.handleAuth = handleAuth;
 const checkInputs = () => {
-    !(0, core_1.getInput)('spacekey') && (0, core_1.setFailed)('Confluence space key is missing, exiting');
-    !(0, core_1.getInput)('cnflurl') && (0, core_1.setFailed)('Confluence URL is missing, exiting');
-    !(0, core_1.getInput)('apikey') && (0, core_1.setFailed)('Confluence API key is missing, exiting');
-    !(0, core_1.getInput)('cnfluser') && (0, core_1.setFailed)('Confluence user is missing, exiting');
-    process.exit();
-    !(0, core_1.getInput)('title') && (0, core_1.setFailed)('Page title is missing, exiting');
-    !(0, core_1.getInput)('filename') &&
-        !(0, core_1.getInput)('markdown') &&
+    if (!(0, core_1.getInput)('spacekey')) {
+        (0, core_1.setFailed)('Confluence space key is missing, exiting');
+        process.exit();
+    }
+    if (!(0, core_1.getInput)('cnflurl')) {
+        (0, core_1.setFailed)('Confluence URL is missing, exiting');
+        process.exit();
+    }
+    if ((!(0, core_1.getInput)('apikey') && !(0, core_1.getInput)('cnfluser')) ||
+        !(0, core_1.getInput)('basicauth')) {
+        (0, core_1.setFailed)('Confluence API key is missing, exiting');
+        process.exit();
+    }
+    if (!(0, core_1.getInput)('title')) {
+        (0, core_1.setFailed)('Page title is missing, exiting');
+        process.exit();
+    }
+    if (!(0, core_1.getInput)('filename') || !(0, core_1.getInput)('markdown')) {
         (0, core_1.setFailed)('Markdown string or markdown file are missing, exiting');
+        process.exit();
+    }
 };
 exports.checkInputs = checkInputs;
 const convert2html = (text) => {

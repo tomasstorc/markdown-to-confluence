@@ -16,15 +16,29 @@ export const handleAuth = () => {
 }
 
 export const checkInputs = () => {
-  !getInput('spacekey') && setFailed('Confluence space key is missing, exiting')
-  !getInput('cnflurl') && setFailed('Confluence URL is missing, exiting')
-  !getInput('apikey') && setFailed('Confluence API key is missing, exiting')
-  !getInput('cnfluser') && setFailed('Confluence user is missing, exiting')
-  process.exit()
-  !getInput('title') && setFailed('Page title is missing, exiting')
-  !getInput('filename') &&
-    !getInput('markdown') &&
+  if (!getInput('spacekey')) {
+    setFailed('Confluence space key is missing, exiting')
+    process.exit()
+  }
+  if (!getInput('cnflurl')) {
+    setFailed('Confluence URL is missing, exiting')
+    process.exit()
+  }
+  if (
+    (!getInput('apikey') && !getInput('cnfluser')) ||
+    !getInput('basicauth')
+  ) {
+    setFailed('Confluence API key is missing, exiting')
+    process.exit()
+  }
+  if (!getInput('title')) {
+    setFailed('Page title is missing, exiting')
+    process.exit()
+  }
+  if (!getInput('filename') || !getInput('markdown')) {
     setFailed('Markdown string or markdown file are missing, exiting')
+    process.exit()
+  }
 }
 
 const convert2html = (text: string): string => {
