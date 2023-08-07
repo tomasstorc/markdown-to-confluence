@@ -89,8 +89,8 @@ const findExisting = async () => {
       }
     }
   )
-  const data = await res.json()
-  console.log(data)
+  const data: any = await res.json()
+  console.log(data.results[0].id)
 }
 
 checkInputs()

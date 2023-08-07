@@ -121,7 +121,7 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
         }
     });
     const data = yield res.json();
-    console.log(data);
+    console.log(data.results[0].id);
 });
 checkInputs();
 let content = convertFn();
