@@ -76,7 +76,7 @@ const updateContent = (content: string | undefined, id: string) => {
       }
     },
     version: {
-      number: 2
+      number: 3
     }
   }
   fetch(`${core.getInput('cnflurl')}/wiki/rest/api/content/${id}`, {
