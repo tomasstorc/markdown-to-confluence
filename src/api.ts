@@ -2,12 +2,11 @@ import {getInput, setFailed} from '@actions/core'
 import {handleAuth, isCloud} from './utils'
 import fetch from 'node-fetch'
 
-export const URL = `${getInput('cnflurl')}${
-  isCloud(getInput('cnflurl')) && '/wiki'
-}/rest/api/content`
+export const URL = `${getInput('cnflurl')}${isCloud(
+  getInput('cnflurl')
+)}/rest/api/content`
 
 export const publishContent = (content: string | undefined) => {
-  console.log(URL)
   const basicauth = handleAuth()
   const payload = {
     type: 'page',
@@ -81,11 +80,7 @@ export const findExisting = async () => {
 
   const basicauth = handleAuth()
   const res = await fetch(
-    `${getInput('cnflurl')}${
-      isCloud(getInput('cnflurl')) && 'wiki'
-    }/rest/api/content?spaceKey=${getInput('spacekey')}&title=${getInput(
-      'title'
-    )}`,
+    `${URL}?spaceKey=${getInput('spacekey')}&title=${getInput('title')}`,
     {
       headers: {
         Authorization: `Basic ${basicauth}`

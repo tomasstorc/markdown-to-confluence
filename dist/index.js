@@ -23,9 +23,8 @@ exports.findExisting = exports.updateContent = exports.publishContent = exports.
 const core_1 = __nccwpck_require__(2186);
 const utils_1 = __nccwpck_require__(918);
 const node_fetch_1 = __importDefault(__nccwpck_require__(4429));
-exports.URL = `${(0, core_1.getInput)('cnflurl')}${(0, utils_1.isCloud)((0, core_1.getInput)('cnflurl')) && '/wiki'}/rest/api/content`;
+exports.URL = `${(0, core_1.getInput)('cnflurl')}${(0, utils_1.isCloud)((0, core_1.getInput)('cnflurl'))}/rest/api/content`;
 const publishContent = (content) => {
-    console.log(exports.URL);
     const basicauth = (0, utils_1.handleAuth)();
     const payload = {
         type: 'page',
@@ -95,7 +94,7 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     console.log(`url is ${exports.URL}`);
     const basicauth = (0, utils_1.handleAuth)();
-    const res = yield (0, node_fetch_1.default)(`${(0, core_1.getInput)('cnflurl')}${(0, utils_1.isCloud)((0, core_1.getInput)('cnflurl')) && 'wiki'}/rest/api/content?spaceKey=${(0, core_1.getInput)('spacekey')}&title=${(0, core_1.getInput)('title')}`, {
+    const res = yield (0, node_fetch_1.default)(`${exports.URL}?spaceKey=${(0, core_1.getInput)('spacekey')}&title=${(0, core_1.getInput)('title')}`, {
         headers: {
             Authorization: `Basic ${basicauth}`
         }
@@ -158,7 +157,7 @@ const fs_1 = __nccwpck_require__(7147);
 const showdown_1 = __nccwpck_require__(1872);
 const isCloud = (url) => {
     const suffix = url.slice(-2);
-    return suffix === 'atlassian.net' ? true : false;
+    return suffix === 'atlassian.net' ? 'wiki' : '';
 };
 exports.isCloud = isCloud;
 const handleAuth = () => {

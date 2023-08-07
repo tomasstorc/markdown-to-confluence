@@ -2,9 +2,9 @@ import {getInput, setFailed} from '@actions/core'
 import {readFileSync} from 'fs'
 import {Converter} from 'showdown'
 
-export const isCloud = (url: string): boolean => {
+export const isCloud = (url: string): string => {
   const suffix = url.slice(-2)
-  return suffix === 'atlassian.net' ? true : false
+  return suffix === 'atlassian.net' ? 'wiki' : ''
 }
 
 export const handleAuth = () => {
