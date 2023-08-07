@@ -156,7 +156,7 @@ const core_1 = __nccwpck_require__(2186);
 const fs_1 = __nccwpck_require__(7147);
 const showdown_1 = __nccwpck_require__(1872);
 const isCloud = (url) => {
-    const suffix = url.split('.').slice(-2).join();
+    const suffix = url.split('.').slice(-2).join('');
     console.log(suffix);
     return suffix === 'atlassian.net/' ? 'wiki' : '';
 };

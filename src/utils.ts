@@ -3,7 +3,7 @@ import {readFileSync} from 'fs'
 import {Converter} from 'showdown'
 
 export const isCloud = (url: string): string => {
-  const suffix = url.split('.').slice(-2).join()
+  const suffix = url.split('.').slice(-2).join('')
   console.log(suffix)
 
   return suffix === 'atlassian.net/' ? 'wiki' : ''
