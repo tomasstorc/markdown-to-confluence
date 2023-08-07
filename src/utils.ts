@@ -4,7 +4,7 @@ import {Converter} from 'showdown'
 
 export const isCloud = (url: string): string => {
   const suffix = url.slice(-2)
-  return suffix === 'atlassian.net' ? 'wiki' : ''
+  return suffix === 'atlassian.net/' ? 'wiki' : ''
 }
 
 export const handleAuth = () => {

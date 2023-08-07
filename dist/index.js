@@ -157,7 +157,7 @@ const fs_1 = __nccwpck_require__(7147);
 const showdown_1 = __nccwpck_require__(1872);
 const isCloud = (url) => {
     const suffix = url.slice(-2);
-    return suffix === 'atlassian.net' ? 'wiki' : '';
+    return suffix === 'atlassian.net/' ? 'wiki' : '';
 };
 exports.isCloud = isCloud;
 const handleAuth = () => {
