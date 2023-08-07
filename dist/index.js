@@ -121,6 +121,7 @@ const findExisting = () => __awaiter(void 0, void 0, void 0, function* () {
             Authorization: `Basic ${basicauth}`
         }
     });
+    console.log(res);
     const data = yield res.json();
     console.log(data);
 });
