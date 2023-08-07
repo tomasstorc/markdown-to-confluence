@@ -65,6 +65,7 @@ const updateContent = (content: string | undefined, id: string) => {
         `${core.getInput('cnfluser')}:${core.getInput('apikey')}`
       ).toString('base64')
   const payload = {
+    id,
     type: 'page',
     title: core.getInput('title'),
     space: {key: core.getInput('spacekey')},
